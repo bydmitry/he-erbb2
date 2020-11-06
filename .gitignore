@@ -1,0 +1,8 @@
+*~
+._*
+
+.ipynb_checkpoints/
+__pycache__/
+*.npy
+*.swp
+*.bak
