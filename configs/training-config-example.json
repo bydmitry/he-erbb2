@@ -1,0 +1,111 @@
+{
+    "name"     : "HER2-fold-1",
+    
+    "n_gpu"    : 2,
+    
+    "reproducibility" : {
+        "enable"     : false,
+        
+        "torchSeed"  : 53,
+        "numpySeed"  : 53,
+        
+        "cudnn.deterministic" : true,
+        "cudnn.benchmark"     : false
+    },
+    
+    "architecture": {
+        "type" : "FinProgNet",
+        "args" : {
+            "backbone_net"   : "se_resnext50_32x4d",
+            
+            "aux_input": null,
+            
+            "aux_outputs" : [ 
+                { 
+                    "name"     : "HER2",
+                    "loss"     : {
+                        "type" : "FocalLoss",
+                        "args" : {
+                            "alpha" : 0.25,
+                            "gamma" : 2
+                        }
+                    },
+                    "metrics"  : [ "auc", "aver_prec" ],
+                    "args"     : {
+                        "o_size"     : 1, 
+                        "h_size"     : 16, 
+                        "activation" : null, 
+                        "drop"       : 0.4
+                    }
+                }
+            ]
+        }
+    },
+    
+    "trainer" : {
+        "epochs"        : 49,
+        "save_dir"      : "/home/trooper/data/experiments/",
+        "save_period"   : 1,
+        "verbosity"     : 0,
+        
+        "early_stop"    : 20,
+        
+        "tensorboardX"  : true
+    },
+    
+    "dataset" : {
+        "type"          : "FinProg",
+        "hdf5_file"     : "/home/trooper/data/train.hdf5",
+        "data_frame"    : "/home/trooper/data/csvs/train-set.csv",
+        "split_col"     : "cv.5",
+        "split_num"     : 1,
+        "aux_vars"      : [ "HER2" ]
+    },
+    
+    "transformations" : {
+        "crop_size"     : 950,
+        "rescale"       : 0.99,
+        "val_crop"      : 2100,
+        "gamma_range"   : 0.3,
+        "scale_range"   : 0.3,
+        "shear_range"   : 0.2,
+        "mean_vector"   : [ 0.8198558 , 0.78990823, 0.91205645 ],
+        "std_vector"    : [ 0.1421396 , 0.15343277, 0.07634846 ]
+    },
+        
+    "loaders" : {
+        "train" : {
+            "batch_size"    : 16,
+            "shuffle"       : true,
+            "num_workers"   : 12,
+            "drop_last"     : true
+        },
+        "val" : {
+            "batch_size"    : 6,
+            "shuffle"       : false,
+            "num_workers"   : 12,
+            "drop_last"     : false
+        }
+    },
+    
+    "optimizer" : {
+        "type"              : "Adam",
+        "update_rate"       : 1,
+        "unfreeze_encoder"  : 3,
+        
+        "args" : {
+            "lr"            : 0.00001,
+            "weight_decay"  : 0.0001,
+            "amsgrad"       : false
+        }
+    },
+    
+    "lr_scheduler": {
+        "enable" : true,
+        "type"   : "MultiStepLR",
+        "args"   : {
+            "milestones" : [ 9 ],
+            "gamma"      : 0.1
+        }
+    }
+}
