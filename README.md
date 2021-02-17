@@ -1,7 +1,5 @@
 ## Deep Learning Identifies Morphological Features in Breast Cancer Predictive of Cancer *ERBB2* Status and Trastuzumab Treatment Efficacy
 
-___
-
 ![](view.png)
 
 ### :file_folder: Sample data and models
