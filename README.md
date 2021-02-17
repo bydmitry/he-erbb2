@@ -2,7 +2,7 @@
 
 ___
 
-![](misc/view.png)
+![](view.png)
 
 ### :file_folder: Sample data and models
 [Download link (~3.3Gb)](https://www.dropbox.com/sh/mi0hixo1l18j128/AADDz2jX9JSRbkciGFdm7rBDa?dl=1)
